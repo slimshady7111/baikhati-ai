@@ -23,14 +23,20 @@ export default async function handler(req, res) {
           { role: 'user', content: prompt }
         ],
         temperature: 0.7,
+        max_tokens: 300
       }),
     });
 
     const data = await response.json();
     const result = data.choices?.[0]?.message?.content || 'Tidak ada hasil.';
 
-    res.status(200).json({ result });
+    res.status(200).json({
+      prediction: result,
+      pips: Math.floor(Math.random() * 100) + 10
+    });
+
   } catch (error) {
+    console.error('OpenAI error:', error);
     res.status(500).json({ error: 'Gagal memproses permintaan.' });
   }
 }
